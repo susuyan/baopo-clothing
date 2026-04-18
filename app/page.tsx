@@ -1,192 +1,278 @@
 import Link from "next/link";
 import Image from "next/image";
 import { getCategories, getProducts, getShop } from "@/lib/data";
-import ProductGrid from "@/components/ProductGrid";
 import { Search } from "lucide-react";
 
 export default function HomePage() {
   const categories = getCategories();
   const products = getProducts();
   const shop = getShop();
-
-  // Featured products: latest 8
-  const featured = products
-    .filter((p) => p.price >= 15)
-    .slice(0, 8);
+  const featured = products.slice(0, 10);
 
   return (
-    <div className="pb-12">
-      {/* Hero Section */}
-      <section className="relative overflow-hidden bg-gradient-to-br from-rose-50 via-white to-amber-50 py-16 sm:py-24"
+    <div className="md:pb-0">
+      {/* Mobile top bar */}
+      <div className="md:hidden bg-white border-b border-gray-100 px-4 py-2.5 flex items-center justify-between sticky top-0 z-50"
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center"
+        <h1 className="text-base font-bold bg-gradient-to-r from-rose-500 to-amber-500 bg-clip-text text-transparent"
+        >爆破服饰</h1
         >
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-medium mb-6"
+        <Link href="/products" className="text-xs text-gray-400 flex items-center gap-0.5"
+        >
+          共{products.length}款
+          <svg className="w-3 h-3" fill="none" stroke="currentColor"
+               viewBox="0 0 24 24"
           >
-            <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7"
             />
-            265 款精选服饰在线
-          </div>
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 leading-tight"
+          </svg
           >
-            爆破服饰
-            <span className="block text-lg sm:text-xl lg:text-2xl font-normal text-gray-500 mt-2"
-            >
-              专业服饰供应链 · 外贸女装 · 中老年女装
-            </span
-            >
-          </h1>
-          <p className="text-sm sm:text-base text-gray-500 max-w-lg mx-auto mb-8"
-          >
-            来自江苏常熟的专业供应商，质优价廉，为您的生意提供稳定货源
-          </p
-          >
-
-          {/* Search CTA */}
-          <Link
-            href="/products"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-xl font-medium text-sm hover:bg-gray-800 transition-colors shadow-lg shadow-gray-900/20"
-          >
-            <Search className="w-4 h-4" />
-            浏览全部产品
-          </Link
-          >
-        </div>
-
-        {/* Decorative elements */}
-        <div className="absolute top-20 right-10 w-32 h-32 bg-rose-200/30 rounded-full blur-3xl" />
-        <div className="absolute bottom-10 left-10 w-40 h-40 bg-amber-200/30 rounded-full blur-3xl" />
-      </section>
-
-      {/* Categories */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14"
-      >
-        <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-6"
+        </Link
         >
-          产品分类
-        </h2>
-        <div className="grid grid-cols-2 gap-3 sm:gap-4"
+      </div
+      >
+
+      {/* Mobile: Search Bar + Categories */}
+      <div className="md:hidden bg-white px-4 pt-3 pb-3.5 border-b border-gray-100"
+      >
+        <Link
+          href="/products"
+          className="flex items-center gap-2 w-full px-3.5 py-2.5 bg-gray-50 rounded-full text-sm text-gray-400"
+        >
+          <Search className="w-4 h-4"/>
+          搜索货号或关键词...
+        </Link
+        >
+
+        {/* Category tags */}
+        <div className="flex gap-2 mt-3 overflow-x-auto scrollbar-hide"
         >
           {categories.map((cat) => (
             <Link
               key={cat.id}
               href={`/products?category=${cat.id}`}
-              className="group relative overflow-hidden rounded-2xl bg-white border border-gray-100 p-5 sm:p-6 hover:border-rose-200 hover:shadow-lg transition-all duration-300"
+              className="shrink-0 px-3.5 py-1.5 bg-rose-50 text-rose-600 text-xs font-medium rounded-full"
+            >
+              {cat.name}
+            </Link
+            >
+          ))}
+          <Link
+            href="/products"
+            className="shrink-0 px-3.5 py-1.5 bg-gray-100 text-gray-600 text-xs font-medium rounded-full"
+          >
+            全部
+          </Link
+          >
+        </div
+        >
+      </div>
+
+      {/* PC Hero */}
+      <section className="hidden md:block relative overflow-hidden bg-gradient-to-br from-rose-50 via-white to-amber-50 py-20"
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 text-center"
+        >
+          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-rose-100 text-rose-700 text-xs font-medium mb-5"
+          >
+            <span className="w-1.5 h-1.5 rounded-full bg-rose-500 animate-pulse"
+            />
+            265 款精选服饰
+          </div
+          >
+          <h1 className="text-4xl font-bold text-gray-900 mb-3 leading-tight"
+          >
+            爆破服饰
+            <span className="block text-xl font-normal text-gray-500 mt-1.5"
+            >
+              服饰供应链 · 外贸女装 · 中老年女装
+            </span
+            >
+          </h1
+          >
+          <p className="text-sm text-gray-500 max-w-md mx-auto mb-6"
+          >
+            来自江苏常熟的专业供应商，质优价廉，为您的生意提供稳定货源
+          </p
+          >
+          <Link
+            href="/products"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gray-900 text-white rounded-xl text-sm font-medium hover:bg-gray-800 transition-colors"
+          >
+            <Search className="w-4 h-4"/>
+            浏览全部产品
+          </Link
+          >
+        </div
+        >
+      </section
+      >
+
+      {/* Mobile: Featured Products */}
+      <section className="md:hidden px-3 pt-3 pb-20"
+      >
+        <div className="flex items-center justify-between mb-3 px-1"
+        >
+          <span className="text-sm font-bold text-gray-900">热门产品</span
+          >
+          <Link href="/products" className="text-xs text-rose-600"
+          >查看更多</Link
+          >
+        </div
+        >
+
+        <div className="grid grid-cols-2 gap-2.5"
+        >
+          {featured.map((p) => (
+            <Link
+              key={p.id}
+              href={`/products/${p.id}`}
+              className="block bg-white rounded-xl overflow-hidden active:scale-[0.98] transition-transform"
+            >
+              <div className="relative aspect-[3/4] bg-gray-100"
+              >
+                <Image
+                  src={p.cover_image}
+                  alt={p.title}
+                  fill
+                  sizes="50vw"
+                  className="object-cover"
+                  loading="lazy"
+                />
+                <span
+                  className="absolute top-1.5 left-1.5 px-1.5 py-0.5 bg-black/60 text-white text-[9px] rounded"
+                >
+                  {p.category_name}
+                </span
+                >
+              </div
+              >
+              <div className="p-2.5"
+              >
+                <div className="flex items-end justify-between mb-1"
+                >
+                  <span className="text-sm font-bold text-rose-600">
+                    ¥{p.price}
+                  </span
+                  >
+                  <span className="text-[10px] text-gray-400">{p.name}</span
+                  >
+                </div
+                >
+                <p className="text-xs text-gray-700 line-clamp-2 leading-relaxed"
+                >
+                  {p.title}
+                </p
+                >
+              </div
+              >
+            </Link
+            >
+          ))}
+        </div
+        >
+
+        <div className="flex justify-center mt-4"
+        >
+          <Link
+            href="/products"
+            className="text-xs text-gray-400 px-4 py-2 border border-gray-200 rounded-full active:bg-gray-50"
+          >查看更多产品</Link
+          >
+        </div
+        >
+      </section
+      >
+
+      {/* PC: Categories + Featured */}
+      <section className="hidden md:block max-w-7xl mx-auto px-6 lg:px-8 py-10"
+      >
+        <h2 className="text-xl font-bold text-gray-900 mb-4"
+        >产品分类</h2
+        >
+        <div className="grid grid-cols-2 gap-3 mb-8"
+        >
+          {categories.map((cat) => (
+            <Link
+              key={cat.id}
+              href={`/products?category=${cat.id}`}
+              className="group bg-white border border-gray-100 rounded-2xl p-5 hover:border-rose-200 hover:shadow-lg transition-all"
             >
               <div className="flex items-center justify-between"
               >
-                <div>
-                  <h3 className="text-lg sm:text-xl font-bold text-gray-900 group-hover:text-rose-600 transition-colors mb-1"
+                <div
+                >
+                  <h3 className="text-lg font-bold text-gray-900 group-hover:text-rose-600 transition-colors"
                   >
                     {cat.name}
                   </h3
                   >
-                  <p className="text-sm text-gray-500"
+                  <p className="text-sm text-gray-500">{cat.count} 款</p
                   >
-                    {cat.count} 款产品
-                  </p
-                  >
-                </div>
-                <div className="w-10 h-10 rounded-xl bg-rose-50 group-hover:bg-rose-100 flex items-center justify-center transition-colors"
+                </div
+                >
+                <div className="w-8 h-8 rounded-lg bg-rose-50 flex items-center justify-center"
                 >
                   <svg
-                    className="w-5 h-5 text-rose-500"
+                    className="w-4 h-4 text-rose-500"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
                   >
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M14 5l7 7m0 0l-7 7m7-7H3"
+                    />
                   </svg
                   >
-                </div>
-              </div>
-            </Link>
+                </div
+                >
+              </div
+              >
+            </Link
+            >
           ))}
-        </div>
-      </section>
-
-      {/* Featured Products */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8"
-      >
-        <div className="flex items-center justify-between mb-6"
+        </div
         >
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900"
-          >
-            热门产品
-          </h2
-          >
-          <Link
-            href="/products"
-            className="text-sm text-rose-600 hover:text-rose-700 font-medium flex items-center gap-1"
-          >
-            查看全部
-            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg
-            >
-          </Link
-          >
-        </div>
-        <ProductGrid products={featured} />
-      </section>
 
-      {/* Supplier Info */}
-      <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-14"
-      >
-        <div className="bg-white rounded-2xl border border-gray-100 p-6 sm:p-8"
+        <h2 className="text-xl font-bold text-gray-900 mb-4">热门产品</h2
         >
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4"
-          >
-            供应商信息
-          </h2
-          >
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-600"
-          >
-            <div
+        <div className="grid grid-cols-4 gap-4"
+        >
+          {featured.slice(0, 8).map((p) => (
+            <Link
+              key={p.id}
+              href={`/products/${p.id}`}
+              className="block bg-white rounded-xl overflow-hidden border border-gray-100 hover:shadow-md transition-shadow"
             >
-              <span className="text-gray-400 block mb-1"
-              >店铺名称</span
+              <div className="relative aspect-square bg-gray-100"
               >
-              <span className="font-medium text-gray-900"
-              >{shop.name}</span
+                <Image
+                  src={p.cover_image}
+                  alt={p.title}
+                  fill
+                  sizes="25vw"
+                  className="object-cover"
+                />
+              </div
               >
-            </div
+              <div className="p-3"
+              >
+                <span className="text-sm font-bold text-rose-600">¥{p.price}</span
+                >
+                <p className="text-sm text-gray-800 mt-0.5 line-clamp-1">{p.title}</p
+                >
+              </div
+              >
+            </Link
             >
-            <div
-            >
-              <span className="text-gray-400 block mb-1"
-              >地址</span
-              >
-              <span className="font-medium text-gray-900"
-              >{shop.address}</span
-              >
-            </div
-            >
-            <div
-            >
-              <span className="text-gray-400 block mb-1"
-              >QQ</span
-              >
-              <span className="font-medium text-gray-900"
-              >{shop.qq}</span
-              >
-            </div
-            >
-            <div
-            >
-              <span className="text-gray-400 block mb-1"
-              >产品数量</span
-              >
-              <span className="font-medium text-gray-900"
-              >{products.length} 款</span
-              >
-            </div
-            >
-          </div
-          >
-        </div>
-      </section>
+          ))}
+        </div
+        >
+      </section
+      >
     </div>
   );
 }

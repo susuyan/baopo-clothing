@@ -15,11 +15,16 @@
 body {
   background: var(--background);
   color: var(--foreground);
+  overscroll-behavior-y: none;
 }
 
-/* Smooth scroll */
 html {
   scroll-behavior: smooth;
+}
+
+/* Mobile safe area bottom padding */
+.safe-area-pb {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 /* Hide scrollbar but keep functionality */
@@ -31,7 +36,13 @@ html {
   scrollbar-width: none;
 }
 
-/* Line clamp utilities */
+.line-clamp-1 {
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .line-clamp-2 {
   display: -webkit-box;
   -webkit-line-clamp: 2;
@@ -39,14 +50,12 @@ html {
   overflow: hidden;
 }
 
-.line-clamp-3 {
-  display: -webkit-box;
-  -webkit-line-clamp: 3;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+/* Tap highlight remove on mobile */
+* {
+  -webkit-tap-highlight-color: transparent;
 }
 
-/* Image loading placeholder */
+/* Image loading placeholder shimmer */
 img {
   background-image: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
   background-size: 200% 100%;
