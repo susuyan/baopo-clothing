@@ -3,6 +3,7 @@ import { Geist } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/Header";
 import TabBar from "@/components/TabBar";
+import { CartProvider } from "@/components/CartProvider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -11,7 +12,7 @@ const geistSans = Geist({
 
 export const metadata: Metadata = {
   title: "爆破服饰",
-  description: "外贸女装、中老年女装批发，265款精选",
+  description: "外贸女装、中老年女装批发采购",
 };
 
 export const viewport: Viewport = {
@@ -29,11 +30,13 @@ export default function RootLayout({
   return (
     <html lang="zh-CN" className={`${geistSans.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col bg-neutral-50 md:bg-gray-50">
-        <Header />
-        <main className="flex-1 overflow-x-hidden">
-          {children}
-        </main>
-        <TabBar />
+        <CartProvider>
+          <Header />
+          <main className="flex-1 overflow-x-hidden">
+            {children}
+          </main>
+          <TabBar />
+        </CartProvider>
       </body>
     </html>
   );
